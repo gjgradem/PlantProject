@@ -1,3 +1,7 @@
+// Plant watering script v0.1
+// Author: Geert Rademakers
+// Copyright
+
 //Init pins
 const int moistPower = 1;
 const int moistSensor = 2;
