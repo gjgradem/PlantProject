@@ -12,3 +12,8 @@ Creating an arduino/rpi communication to monitor and water plants.
 * Some kind of webhost to control manual watering
 * Webpage to see stats and interact with them (possibly on an external host)
 * Multiple plants support
+
+# Extra's if I have enough time
+* Application to monitor the plant (ionic?)
+* Functionality to manually water the plant
+* Extra pumping system for plant supplements with automation or manual triggers
