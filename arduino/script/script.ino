@@ -44,7 +44,8 @@ void pumpWater() {
   delay(pumptime);
   digitalWrite(pump, LOW);
   digitalWrite(onBoardLed, LOW);
-  //Serial.println("Pumped water for " + (pumptime / 1000) + " seconds. Waiting a few seconds before retrying...");
+  Serial.println("Pumped water for " + String((pumptime / 1000)) + " seconds. Waiting a few seconds before retrying...");
+  Serial.println("entry:" + String((pumptime / 1000))
   delay(10000);
 }
 
