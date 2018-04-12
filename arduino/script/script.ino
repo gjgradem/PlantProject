@@ -7,20 +7,42 @@ const int moistPower = 53;
 const int moistSensor = 7;
 const int onBoardLed = 13;
 const int pump = 52;
-const int pumptime = 10000;
-const long timeout = 5000;
+const int pumptime = 100;
+const long timeout = 100;
 const int moistMax = 300;
+const int afterPumpDelay = 100;
 int moistLvl = 0;
+unsigned long sinceStart = millis();
 
 void setup() {
   pinMode(moistPower, OUTPUT);
   pinMode(pump, OUTPUT);
   pinMode(onBoardLed, OUTPUT);
   Serial.begin(9600);
-  Serial.write("Setting up");
+  Serial.println("Setting up");
 }
 
 void loop() {
+  if(sinceStart%10000 == 0) {
+    Serial.println("10 seconds passed");
+    wateringSequence();
+  }
+  else if (sinceStart%5000 == 0) {
+    Serial.println("5 seconds passed");
+    measureMoist();
+  }
+}
+
+void measureMoist() {
+  enableSensor();
+  String prefix = "command:measure:";
+  int data = analogRead(moistSensor);
+  String toSend = prefix + data;
+  Serial.println(toSend);
+  disableSensor();
+}
+
+void wateringSequence() {
   Serial.println("Starting watering sequence...");
   enableSensor();
   moistLvl = analogRead(moistSensor);
@@ -44,9 +66,11 @@ void pumpWater() {
   delay(pumptime);
   digitalWrite(pump, LOW);
   digitalWrite(onBoardLed, LOW);
-  Serial.println("Pumped water for " + String((pumptime / 1000)) + " seconds. Waiting a few seconds before retrying...");
-  Serial.println("entry:" + String((pumptime / 1000))
-  delay(10000);
+  //Serial.println("Pumped water for " + String((pumptime / 1000)) + " seconds. Waiting a few seconds before retrying...");
+  String toprint = "command:feed:";
+  String toprintdata = toprint + pumptime;
+  Serial.println(toprintdata);
+  delay(afterPumpDelay);
 }
 
 void enableSensor() {
@@ -61,4 +85,5 @@ void disableSensor() {
   digitalWrite(moistPower, LOW);
   Serial.println("Sensor disabled!");
 }
+
 
