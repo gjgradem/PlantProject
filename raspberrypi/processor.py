@@ -25,7 +25,7 @@ def doFeedRow(data):
 
 def doMeasureRow(data):
 	rawdata = dict()
-	rawdata['moistlvl'] = data
+	rawdata['moistlvl'] = int(data)
 	rawdata['timestamp'] = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 	firebase.post('/plants/komkommer/measurerows', rawdata)
