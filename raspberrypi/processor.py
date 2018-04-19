@@ -8,10 +8,12 @@ firebase = firebase.FirebaseApplication('https://plantproject-c1a0c.firebaseio.c
 
 def commandSwitch( cmd, data ):
 	if cmd == "feed":
-		doFirebaseEntry( data )
+		doFeedRow( data )
+	elif cmd == "measure":
+		doMeasureRow ( data )
 	return
 
-def doFirebaseEntry(data):
+def doFeedRow(data):
 	pumpSeconds = int(data) / 1000
 	#print("Starting firebase entry with value {} seconds and date {}").format(pumpSeconds,)
 	rawdata = dict()
@@ -19,6 +21,14 @@ def doFirebaseEntry(data):
 	rawdata['timestamp'] = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 	firebase.post('/plants/komkommer/feedrows', rawdata)
+	return
+
+def doMeasureRow(data):
+	rawdata = dict()
+	rawdata['moistlvl'] = data
+	rawdata['timestamp'] = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+
+	firebase.post('/plants/komkommer/measurerows', rawdata)
 	return
 
 ser = serial.Serial('/dev/ttyACM0', 9600)

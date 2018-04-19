@@ -2,36 +2,55 @@
 // Author: Geert Rademakers
 // Copyright
 
+// Includes
+#include <SoftTimer.h>
+
+
+
 //Init pins
 const int moistPower = 53;
 const int moistSensor = 7;
 const int onBoardLed = 13;
+const long measureInterval = 900000;
+const long pumpInterval = 3600000;
 const int pump = 52;
-const int pumptime = 100;
-const long timeout = 100;
+const int pumptime = 1000;
+
+//standard value: kek
 const int moistMax = 300;
-const int afterPumpDelay = 100;
+
+//standard value: 300000
+const int afterPumpDelay = 30000;
 int moistLvl = 0;
 unsigned long sinceStart = millis();
 
-void setup() {
-  pinMode(moistPower, OUTPUT);
-  pinMode(pump, OUTPUT);
-  pinMode(onBoardLed, OUTPUT);
-  Serial.begin(9600);
-  Serial.println("Setting up");
+
+
+
+void pumpTest(Task* me) {
+  Serial.println("Pumploop activated!");
+  //wateringSequence();
 }
 
-void loop() {
-  if(sinceStart%10000 == 0) {
-    Serial.println("10 seconds passed");
-    wateringSequence();
-  }
-  else if (sinceStart%5000 == 0) {
-    Serial.println("5 seconds passed");
-    measureMoist();
-  }
+void measureTest(Task* me) {
+  Serial.println("Measureloop activated!");
+  measureMoist();
 }
+
+Task measureTask(measureInterval, measureTest);
+Task pumpTask(pumpInterval, pumpTest);
+
+
+//void loop() {
+//  if(sinceStart%10000 == 0) {
+//    Serial.println("10 seconds passed");
+//    //wateringSequence();
+//  }
+//  else if (sinceStart%5000 == 0) {
+//    Serial.println("5 seconds passed");
+//    //measureMoist();
+//  }
+//}
 
 void measureMoist() {
   enableSensor();
@@ -43,24 +62,22 @@ void measureMoist() {
 }
 
 void wateringSequence() {
-  Serial.println("Starting watering sequence...");
+  //Serial.println("Starting watering sequence...");
   enableSensor();
   moistLvl = analogRead(moistSensor);
+  //toPrint = "sensor value: " + moistLvl;
   Serial.println(moistLvl);
-  //Serial.println("Sensor value: " + moistLvl);
   if (moistLvl < moistMax) {
     pumpWater();
+    wateringSequence();
   }
   else {
     disableSensor();
-    //Serial.println("Going to sleep for " + (timeout / 1000) + " seconds");
-    Serial.println("Ending watering sequence...");
-    delay(timeout);
   }
 }
 
 void pumpWater() {
-  Serial.println("Pumping water...");
+  //Serial.println("Pumping water...");
   digitalWrite(onBoardLed, HIGH);
   digitalWrite(pump, HIGH);
   delay(pumptime);
@@ -74,16 +91,27 @@ void pumpWater() {
 }
 
 void enableSensor() {
-  Serial.println("Enabeling sensor...");
+  //Serial.println("Enabeling sensor...");
   digitalWrite(moistPower, HIGH);
   delay(500);
-  Serial.println("Sensor enabled!");
+  //Serial.println("Sensor enabled!");
 }
 
 void disableSensor() {
-  Serial.println("Disabling sensor...");
+  //Serial.println("Disabling sensor...");
   digitalWrite(moistPower, LOW);
-  Serial.println("Sensor disabled!");
+  //Serial.println("Sensor disabled!");
+}
+
+
+void setup() {
+  pinMode(moistPower, OUTPUT);
+  pinMode(pump, OUTPUT);
+  pinMode(onBoardLed, OUTPUT);
+  Serial.begin(9600);
+  Serial.println("Setting up");
+  SoftTimer.add(&measureTask);
+  SoftTimer.add(&pumpTask);
 }
 
 
