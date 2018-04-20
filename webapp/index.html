@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +8,39 @@
     <link rel="stylesheet" href="css/bootstrap-grid.css">
     <link rel="stylesheet" href="css/bootstrap.css">
 </head>
+
 <body>
-    <div id="app">{{ firstvar }}</div>
-    
+    <div id="app">
+        <ul>
+            <li v-for="item in feedrows">Moist level: {{ item.moistlvl }}. this was measured on {{ item.timestamp }}</li>
+        </ul>
+    </div>
+
     <script src="js/bootstrap.js"></script>
     <script src="js/vue.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/vuefire.js"></script>
     <script>
+        var fbconfig = {
+            apiKey: "AIzaSyD2nWw3IaNHwnqzYezm8Zc5yK1ld25n3sA",
+            authDomain: "plantproject-c1a0c.firebaseapp.com",
+            databaseURL: "https://plantproject-c1a0c.firebaseio.com",
+            projectId: "plantproject-c1a0c",
+            storageBucket: "plantproject-c1a0c.appspot.com",
+            messagingSenderId: "606477162799"
+        };
+        var firebaseApp = firebase.initializeApp(fbconfig);
+        var db = firebaseApp.database();
         const app = new Vue({
             el: "#app",
+            firebase: {
+                feedrows: db.ref('plants/komkommer/measurerows'),
+            },
             data: {
                 firstvar: "homo"
             }
         });  
     </script>
 </body>
+
 </html>
