@@ -14,22 +14,19 @@ const int onBoardLed = 13;
 const long measureInterval = 900000;
 const long pumpInterval = 3600000;
 const int pump = 52;
-const int pumptime = 1000;
+const int pumptime = 4000;
 
 //standard value: kek
-const int moistMax = 300;
+const int moistMax = 180;
 
-//standard value: 300000
-const int afterPumpDelay = 30000;
+//standard value: 180000
+const long afterPumpDelay = 180000;
 int moistLvl = 0;
-unsigned long sinceStart = millis();
-
-
-
+int feedtimes = 0;
 
 void pumpTest(Task* me) {
   Serial.println("Pumploop activated!");
-  //wateringSequence();
+  wateringSequence();
 }
 
 void measureTest(Task* me) {
@@ -68,25 +65,33 @@ void wateringSequence() {
   //toPrint = "sensor value: " + moistLvl;
   Serial.println(moistLvl);
   if (moistLvl < moistMax) {
+    feedtimes++;
     pumpWater();
     wateringSequence();
   }
   else {
     disableSensor();
+    if (feedtimes != 0) {
+      String toprint = "command:feed:";
+      String toprintdata = toprint + feedtimes;
+      Serial.println(toprintdata);
+      feedtimes = 0;
+    }
+    else {
+      Serial.println("Not fed");
+    }
   }
 }
 
 void pumpWater() {
-  //Serial.println("Pumping water...");
+  Serial.println("Pumping water...");
   digitalWrite(onBoardLed, HIGH);
   digitalWrite(pump, HIGH);
   delay(pumptime);
   digitalWrite(pump, LOW);
   digitalWrite(onBoardLed, LOW);
-  //Serial.println("Pumped water for " + String((pumptime / 1000)) + " seconds. Waiting a few seconds before retrying...");
-  String toprint = "command:feed:";
-  String toprintdata = toprint + pumptime;
-  Serial.println(toprintdata);
+  Serial.println("Waiting for: ");
+  Serial.print(afterPumpDelay);
   delay(afterPumpDelay);
 }
 

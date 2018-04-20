@@ -14,10 +14,9 @@ def commandSwitch( cmd, data ):
 	return
 
 def doFeedRow(data):
-	pumpSeconds = int(data) / 1000
 	#print("Starting firebase entry with value {} seconds and date {}").format(pumpSeconds,)
 	rawdata = dict()
-	rawdata['pumpSeconds'] = pumpSeconds
+	rawdata['feedtimes'] = int(data)
 	rawdata['timestamp'] = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 	firebase.post('/plants/komkommer/feedrows', rawdata)
