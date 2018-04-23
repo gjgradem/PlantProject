@@ -1,6 +1,8 @@
 # PlantProject
 Creating an arduino/rpi communication to monitor and water plants.
 
+Working version: :x:
+
 # Stuff i want to implement for sure
 * Arduino & rPI serial communication :white_check_mark:
 * A database to store data about watering times, moisture levels and time of the day :white_check_mark:
