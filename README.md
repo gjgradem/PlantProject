@@ -3,6 +3,21 @@ Creating an arduino/rpi communication to monitor and water plants.
 
 Working version: :x:
 
+Because I always forgot to water my plants in the summer,  I made this script with construction to feed them automatically. If you want this to run you'll need the following things:
+- [An arduino](https://store.arduino.cc/)
+- [A 5v pump](https://www.aliexpress.com/item/1pcs-Mute-Submersible-Pump-Water-Pump-DC-3V-5V-For-PC-Cooling-Water-Circulation-DIY/32816435741.html)
+- [Some jumper cables](https://www.aliexpress.com/item/Dupont-Line-120pcs-10cm-Male-to-Male-Female-to-Male-and-Female-to-Female-Jumper-Wire/32824654220.html)
+- [Some tube fitting the pump (because each pump has different sizes, you should check this for yourself)][https://www.aliexpress.com/item/1PCS-YT830-Imported-Silicone-Tube-Food-Grade-Capillary-Transparent-Hose-4-mm-5-6-7-8/32778136849.html]
+- [A moisture sensor](https://www.aliexpress.com/item/2pcs-Soil-Humidity-Sensor-Module-Hygrometer-Detection-Moisture-Sensor-Sensing-Module-for-Arduino-Automatic-Watering-System/32760389137.html)
+
+If you want data collection you will need a dedicated computer or [Raspberry Pi](https://www.raspberrypi.org/products/) aswell. Maybe I'll try to implement the rPi script in the arduino if I have time enough.
+
+The different scripts in existance are: 
+- :white_check_mark: [Arduino script](arduino/script/arduino.md)
+- :white_check_mark: [Raspberry Pi script (python)](raspberrypi/raspberrypi.md)
+- :x: [An app](plantapp/mobileapp.md)
+- :x: [A web dashboard](webapp/webapp.md)
+
 # Stuff i want to implement for sure
 * Arduino & rPI serial communication :white_check_mark:
 * A database to store data about watering times, moisture levels and time of the day :white_check_mark:
@@ -21,6 +36,7 @@ Working version: :x:
 * Application to monitor the plant (ionic?)
 * Functionality to manually water the plant
 * Extra pumping system for plant supplements with automation or manual triggers
+* Ethernet connection on the arduino so the raspberry won't be needed anymore
 
 So far the Raspberry Pi script and the Arduino script are done. Below you can checkout how they work and how to install them.
 
