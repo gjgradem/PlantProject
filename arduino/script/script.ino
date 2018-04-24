@@ -13,11 +13,11 @@ const int moistSensor = 7;
 const int onBoardLed = 13;
 const long measureInterval = 900000;
 const long pumpInterval = 3600000;
-const int pump = 52;
+const int pump = 51;
 const int pumptime = 4000;
 
 //standard value: kek
-const int moistMax = 180;
+const int moistMin = 270;
 
 //standard value: 180000
 const long afterPumpDelay = 180000;
@@ -64,7 +64,7 @@ void wateringSequence() {
   moistLvl = analogRead(moistSensor);
   //toPrint = "sensor value: " + moistLvl;
   Serial.println(moistLvl);
-  if (moistLvl < moistMax) {
+  if (moistLvl < moistMin) {
     feedtimes++;
     pumpWater();
     wateringSequence();
