@@ -34,10 +34,10 @@
         const app = new Vue({
             el: "#app",
             firebase: {
-                feedrows: db.ref('plants/komkommer/measurerows'),
+                feedrows: db.ref('plants/komkommer/measurerows').limitToLast(10),
             },
             data: {
-                firstvar: "homo"
+                firstvar: "kekl"
             }
         });  
     </script>
