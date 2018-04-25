@@ -14,10 +14,10 @@ const int onBoardLed = 13;
 const long measureInterval = 900000;
 const long pumpInterval = 3600000;
 const int pump = 51;
-const int pumptime = 4000;
+const int pumptime = 3000;
 
 //standard value: kek
-const int moistMin = 270;
+const int moistMin = 350;
 
 //standard value: 180000
 const long afterPumpDelay = 180000;
