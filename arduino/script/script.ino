@@ -17,7 +17,7 @@ const int pump = 51;
 const int pumptime = 1500;
 
 //standard value: kek
-const int moistMin = 250;
+const int moistMin = 280;
 
 //standard value: 300000
 const long afterPumpDelay = 300000;
