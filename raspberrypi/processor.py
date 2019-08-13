@@ -30,16 +30,31 @@ def doMeasureRow(data):
 	firebase.post('/plants/komkommer/measurerows', rawdata)
 	return
 
-ser = serial.Serial('/dev/ttyACM0', 9600)
+def openSerialConnection():
+	ser = serial
+	try :
+		ser = serial.Serial('/dev/ttyACM0', 9600)
+		startMeasuring(ser)
+	
+	except serial.serialutil.SerialException:
+  		print 'No rpi connected'
 
-while 1:
-	rawinput = ser.readline()
-	if not (rawinput is None):
-		splittedinput = rawinput.split(":")
-		firstarg = splittedinput[0]
-		print(firstarg)
-		if firstarg  == 'command':
-			print('command recognised!')
-			commandSwitch(splittedinput[1], splittedinput[2])
-	else:
-		print("No input read..")
+	return
+
+def startMeasuring(ser):
+	while ser.readline():
+		rawinput = ser.readline()
+		if not (rawinput is None):
+			splittedinput = rawinput.split(":")
+			firstarg = splittedinput[0]
+			print(firstarg)
+			if firstarg  == 'command':
+				print('command recognised!')
+				commandSwitch(splittedinput[1], splittedinput[2])
+		else:
+			print("No input read..")
+	print('lost connection... closing and reopening.')
+	ser.close()
+	return
+
+openSerialConnection()
